@@ -7,6 +7,7 @@ import java.util.List;
 import ml.docilealligator.infinityforreddit.RedditDataRoomDatabase;
 
 public class InsertRecentSearchQuery {
+    public static final int SEARCH_HISTORY_LENGTH = 100000;
     public interface InsertRecentSearchQueryListener {
         void success();
     }
@@ -34,8 +35,8 @@ public class InsertRecentSearchQuery {
         @Override
         protected Void doInBackground(Void... voids) {
             List<RecentSearchQuery> recentSearchQueries = recentSearchQueryDao.getAllRecentSearchQueries(username);
-            if (recentSearchQueries.size() >= 5) {
-                for (int i = 4; i < recentSearchQueries.size(); i++) {
+            if (recentSearchQueries.size() >= SEARCH_HISTORY_LENGTH) {
+                for (int i = SEARCH_HISTORY_LENGTH - 1; i < recentSearchQueries.size(); i++) {
                     recentSearchQueryDao.deleteRecentSearchQueries(recentSearchQueries.get(i));
                 }
             }
